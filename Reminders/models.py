@@ -17,5 +17,5 @@ class Reminder(models.Model):
     created_at = models.DateTimeField(default=now)
     frequency = models.CharField(choices=frequencies, null=True, max_length=100)
     last_sent = models.DateTimeField(null=True)
-    run_until = models.DateTimeField(null=True)
+    run_until = models.DateField(null=True)
     status = models.CharField(max_length=100, choices=statuses)

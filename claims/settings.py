@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'SupportDocuments',
     'Templates',
     'Reminders',
-    'Notifications'
+    'Notifications',
+    'StaffReimbursement'
 ]
 
 MIDDLEWARE = [
@@ -155,7 +156,7 @@ TIME_ZONE = 'Africa/Kampala'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

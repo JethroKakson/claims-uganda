@@ -18,6 +18,24 @@ from .api import ApiKeyAuth
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib.auth.signals import user_login_failed
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+
+@receiver(user_login_failed)
+def failed_login_attempt(sender, credentials, request, **kwargs):
+    username = credentials.get('username')
+    user = User.objects.get(username=username)
+    ip_address = request.META.get('REMOTE_ADDR')
+    subject = 'Failed Login Attempt'
+    html_message = render_to_string('failed_login_email.html', {'ip_address': ip_address, 'name': user.first_name, 'date': now().strftime('%Y-%m-%d %H:%M:%S')})
+    plain_message = strip_tags(html_message)
+    from_email = 'Claims System <info@claimsug.com>'
+    to = user.email
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+
+
 
 
 def login_user(request):

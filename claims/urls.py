@@ -18,6 +18,7 @@ urlpatterns = [
     path('reminders/', include('Reminders.urls')),
     path('support-documents/', include('SupportDocuments.urls')),
     path('notifications/', include('Notifications.urls')),
+    path('reimbursements/', include('StaffReimbursement.urls')),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('api/v1/', api.urls),
     path('admin/', admin.site.urls),
