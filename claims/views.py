@@ -10,6 +10,26 @@ from django.contrib.auth.decorators import login_required
 from Reports.models import Report
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from ninja import NinjaAPI
+from django.core.signals import request_finished, got_request_exception
+from django.dispatch import receiver
+import sys
+from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+@receiver(got_request_exception)
+def track_errors(sender, **kwargs):
+    request = kwargs['request']
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    view_name = request.resolver_match.view_name
+    app_name = request.resolver_match.app_name
+    logged_in_user = request.user
+    subject = 'Bug Detected! Fix Urgently.'
+    html_message = render_to_string('error_email.html', {'user': logged_in_user, 'view': view_name, 'date': now().strftime('%Y-%m-%d %H:%M:%S'), 'error': str(exc_value), 'error_type': str(exc_type.__name__)})
+    plain_message = strip_tags(html_message)
+    from_email = 'Claims System <info@claimsug.com>'
+    to = 'mukisaelijah293@gmail.com'
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
 
 api = NinjaAPI(title="Claims Api Documentation")
 
