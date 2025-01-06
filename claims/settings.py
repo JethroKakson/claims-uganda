@@ -50,6 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'Appointments',
     'Assessors',
     'Cases',
@@ -77,7 +81,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
+
 
 ROOT_URLCONF = 'claims.urls'
 
@@ -123,6 +129,7 @@ DATABASES = {
 
 
 
+SITE_ID = 1
 
 
 
@@ -145,7 +152,32 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default authentication
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth backend
+]
+
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['email', 'profile'],
+        'AUTH_PARAMS': {},
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
+
+
+SOCIAL_AUTH_GOOGLE_CLIENT_ID = '723353749742-qop461897ll4ika1pka0aso7f9rku6nk.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_SECRET = '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'
+
+
+SOCIALACCOUNT_ADAPTER = 'Auth.adapters.CustomSocialAccountAdapter'
 
 
 # Internationalization

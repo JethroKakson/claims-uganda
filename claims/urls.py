@@ -20,6 +20,7 @@ urlpatterns = [
     path('notifications/', include('Notifications.urls')),
     path('reimbursements/', include('StaffReimbursement.urls')),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('accounts/', include('allauth.urls')),
     path('api/v1/', api.urls),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,6 @@
 {% extends 'auth_base.html' %}
 {% load static %}
+{% load socialaccount %}
 
 {%  block content %}
 
@@ -48,6 +49,10 @@
             <button type="submit" class="btn btn-primary btn-block enter-btn">
               <i class="fas fa-sign-in-alt"></i> Login
             </button>
+            <a href="{% provider_login_url 'google' %}" class="btn btn-secondary btn-block mt-2 text-dark">
+              <i class="fab fa-google"></i> Login with Google
+            </a>
+            
           </div>
           <p class="sign-up">Don't have an Account? Reach out to Administrator</p>
         </form>
