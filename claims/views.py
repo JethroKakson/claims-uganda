@@ -31,6 +31,8 @@ def track_errors(sender, **kwargs):
     to = 'mukisaelijah293@gmail.com'
     mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
 
+    
+
 api = NinjaAPI(title="Claims Api Documentation")
 
 @login_required

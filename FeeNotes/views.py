@@ -4,6 +4,17 @@ from .models import FeeNote
 from .forms import FeeNoteForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
+
+
+@receiver(post_delete, sender=FeeNote)
+def delete_file(sender, instance, **kwargs):
+    try:
+        os.remove(instance.valid_fee_note.path)
+    except OSError:
+        pass
 
 
 @login_required

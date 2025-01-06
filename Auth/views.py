@@ -70,7 +70,7 @@ def login_user(request):
             return redirect('.')
     if 'next' in request.GET:  # 'next' parameter indicates redirection
         messages.info(request, "Your session has expired. Please log in again.")
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'now': now()})
 
 
 def register(request):

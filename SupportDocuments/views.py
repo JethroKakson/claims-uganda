@@ -4,6 +4,17 @@ from .models import SupportDocument
 from .forms import SupportDocumentForm
 from django.contrib import messages
 from Cases.models import Case
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
+
+
+@receiver(post_delete, sender=SupportDocument)
+def delete_file(sender, instance, **kwargs):
+    try:
+        os.remove(instance.file.path)
+    except OSError:
+        pass
 
 @login_required
 def upload_support_document(request, case_id):

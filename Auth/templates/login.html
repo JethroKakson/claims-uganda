@@ -1,10 +1,20 @@
 {% extends 'auth_base.html' %}
+{% load static %}
 
 {%  block content %}
 
     <div class="card mx-auto">
       <div class="card-body">
         <div class="text-center">
+          {% if now|date:"m" == "12" %}
+          <img class="mb-2" width="70" src="{% static 'assets/img/xmas.png' %}" alt="">
+          {% endif %}
+          {% if now|date:"m" == "10" and now|date:"d" == "09" %}
+          <img width="70" class="mb-2" src="{% static 'assets/img/uganda.jpg' %}" alt="">
+          {% endif %}
+          {% if now|date:"m" == "01" %}
+          <img class="mb-2" width="200" src="{% static 'assets/img/newyear.png' %}" alt="">
+          {% endif %}
           <h3 class="card-title mb-3">Claims Management</h3>
         </div>
         <h4 class="card-title text-left mb-3">Login</h4>
@@ -35,7 +45,9 @@
             <a href="{% url 'reset_password' %}" class="forgot-pass">Forgot password</a>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+            <button type="submit" class="btn btn-primary btn-block enter-btn">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
           </div>
           <p class="sign-up">Don't have an Account? Reach out to Administrator</p>
         </form>

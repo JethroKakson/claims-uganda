@@ -10,6 +10,19 @@ from Staff.models import Staff
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os 
+
+
+@receiver(post_delete, sender=Report)
+def delete_file(sender, instance, **kwargs):
+    file = instance.file
+    try:
+        os.remove(file.path)
+    except OSError:
+        pass
+
 
 
 @login_required

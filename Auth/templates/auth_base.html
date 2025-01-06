@@ -8,6 +8,8 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'login/vendors/mdi/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'login/vendors/css/vendor.bundle.base.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
@@ -19,10 +21,11 @@
     <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
   </head>
   <body>
-    <div class="container-scroller">
+    <div class="container-scroller" >
       <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="row w-100 m-0">
-            <div style="background-image: url({% static 'assets/img/city.jpg' %});" class="content-wrapper full-page-wrapper d-flex align-items-center auth">
+            <div id="fireworks-container" style="background-image: url({% static 'assets/img/city.jpg' %});" class="content-wrapper full-page-wrapper d-flex align-items-center auth">
+              
         {% block content %}{% endblock %}
         </div>
         </div>
@@ -42,6 +45,6 @@
     <script src="{% static 'login/js/misc.js' %}"></script>
     <script src="{% static 'login/js/settings.js' %}"></script>
     <script src="../../assets/js/todolist.js"></script>
-    <!-- endinject -->
+    
   </body>
 </html>

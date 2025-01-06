@@ -3,6 +3,17 @@ from django.shortcuts import render, redirect
 from .models import Picture
 from Cases.models import Case
 from django.contrib import messages
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
+
+
+@receiver(post_delete, sender=Picture)
+def delete_file(sender, instance, **kwargs):
+    try:
+        os.remove(instance.image.path)
+    except OSError:
+        pass
 
 @login_required
 def upload_picture(request, case_id):
