@@ -100,9 +100,7 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <object data="{% url 'generate_fee_note_pdf' note.id %}" type="application/pdf" width="100%" height="500">
-                            <p>Your web browser doesn't have a PDF plugin. Instead you can <a href="{% url 'generate_fee_note_pdf' note.id %}">click here to download the PDF file.</a></p>
-                          </object>
+                          <img class="img-fluid" src="{% url 'pdf_preview' note.id %}" alt="">
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

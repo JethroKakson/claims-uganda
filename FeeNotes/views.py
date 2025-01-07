@@ -8,9 +8,10 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from PIL import Image, ImageDraw, ImageFont
 import os
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.utils.timezone import now
 from io import BytesIO
+from num2words import num2words
 
 
 @receiver(post_delete, sender=FeeNote)
@@ -51,7 +52,7 @@ def add_fee_note(request):
             form.save(commit=False)
             total = form.instance.inspection_and_assessment_fee + form.instance.accommodation_fee + form.instance.out_of_office_allowance + form.instance.travel_and_assessment_fee + form.instance.photos
             vat = 0.18*float(total)
-            form.instance.total = float(total) - vat
+            form.instance.total = float(total) + float(vat)
             form.instance.value_added_tax = vat
             print(form.instance.total)
             form.save()
@@ -103,11 +104,18 @@ def generate_fee_note_pdf(request, fee_note_id):
 
     image = Image.open('note.jpg')
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype(font_path, 70) if 'arial.ttf' else ImageFont.load_default()
+    font = ImageFont.truetype(font_path, 30) if 'arial.ttf' else ImageFont.load_default()
     color = (0, 0, 0)
-    draw.text((360, 900), fee_note.case.get_insurance_Company_display(), font=font, fill=color)
+    draw.text((360, 900), fee_note.case.get_insurance_Company_display().upper(), font=font, fill=color)
     font = ImageFont.truetype(font_path, 45) if 'arial.ttf' else ImageFont.load_default()
-    draw.text((1265, 810), now().strftime("%Y-%m-%d"), font=font, fill=color)
+    draw.text((1700, 810), fee_note.case.reference_number, font=font, fill=color)
+    draw.text((560, 1130), fee_note.case.description, font=font, fill=color)
+    draw.text((560, 1240), fee_note.case.client, font=font, fill=color)
+    font = ImageFont.truetype(font_path, 40) if 'arial.ttf' else ImageFont.load_default()   
+    draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font, fill=color)
+    font = ImageFont.truetype(font_path, 40) if font_path else ImageFont.load_default()
+    words = words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
+    draw.text((800, 2625), words.upper(), font=font, fill=color)
     font = ImageFont.truetype(font_path, 70) if font_path else ImageFont.load_default()
     amounts = [fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee, fee_note.out_of_office_allowance, fee_note.travel_and_assessment_fee, fee_note.photos, fee_note.value_added_tax, fee_note.total]
     x_pos = 1120
@@ -139,3 +147,52 @@ def generate_fee_note_pdf(request, fee_note_id):
 
     return response
 
+
+
+def pdf_preview(request, fee_note_id):
+    fee_note = FeeNote.objects.get(id=fee_note_id)
+    font_path = 'gothic.ttf'
+    
+    if not os.path.isfile(font_path):
+        font_path = None
+    
+    image = Image.open('note.jpg')
+    draw = ImageDraw.Draw(image)
+    
+    # Load fonts
+    font_default = ImageFont.load_default()
+    font_small = ImageFont.truetype(font_path, 30) if font_path else font_default
+    font_medium = ImageFont.truetype(font_path, 40) if font_path else font_default
+    font_large = ImageFont.truetype(font_path, 70) if font_path else font_default
+
+    color = (0, 0, 0)
+
+    # Draw texts
+    draw.text((360, 900), fee_note.case.get_insurance_Company_display().upper(), font=font_small, fill=color)
+    draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
+    draw.text((560, 1130), fee_note.case.description, font=font_medium, fill=color)
+    draw.text((560, 1240), fee_note.case.client, font=font_medium, fill=color)
+    draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
+
+    words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
+    draw.text((800, 2625), words.upper(), font=font_medium, fill=color)
+
+    amounts = [
+        fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee,
+        fee_note.out_of_office_allowance, fee_note.travel_and_assessment_fee,
+        fee_note.photos, fee_note.value_added_tax, fee_note.total
+    ]
+
+    y_positions = [1500, 1650, 1790, 1930, 2050, 2150, 2250]
+    for idx, y in enumerate(y_positions):
+        draw.text((1120, y), f"{amounts[idx]} UGX", font=font_large, fill=color)
+    
+    # Save to BytesIO
+    output = BytesIO()
+    image.save(output, format="JPEG")
+    output.seek(0)
+
+    response = FileResponse(output, content_type="image/jpeg")
+    response['Content-Disposition'] = f'inline; filename="fee_note_{fee_note_id}.jpg"'
+
+    return response
