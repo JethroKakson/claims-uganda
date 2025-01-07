@@ -13,8 +13,10 @@ import os
 def delete_file(sender, instance, **kwargs):
     try:
         os.remove(instance.valid_fee_note.path)
-    except OSError:
+    except:
         pass
+
+    
 
 
 @login_required
