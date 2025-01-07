@@ -87,12 +87,29 @@
                     </div>
                   </div>
 
-                  <a href="">
-                    <button title="Download Fee Note" data-bs-toggle="tooltip" type="button" class="btn btn-link btn-info"
-                      data-bs-toggle="tooltip">
-                      <i class="fa fa-download"></i>
-                    </button>
-                  </a>
+                  <button type="button" class="btn btn-link btn-info" title="download" data-bs-toggle="modal" data-bs-target="#downloadFeeNoteModal{{ note.id }}">
+                    <i class="fa fa-download"></i>
+                  </button>
+
+                  <!-- Download Fee Note Modal -->
+                  <div class="modal fade" id="downloadFeeNoteModal{{ note.id }}" tabindex="-1" aria-labelledby="downloadFeeNoteModalLabel{{ note.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="downloadFeeNoteModalLabel{{ note.id }}">Download Fee Note</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <object data="{% url 'generate_fee_note_pdf' note.id %}" type="application/pdf" width="100%" height="500">
+                            <p>Your web browser doesn't have a PDF plugin. Instead you can <a href="{% url 'generate_fee_note_pdf' note.id %}">click here to download the PDF file.</a></p>
+                          </object>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <a href="{% url 'generate_fee_note_pdf' note.id %}" class="btn btn-info">Download</a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
               </td>
             </tr>
