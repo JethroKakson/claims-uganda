@@ -99,14 +99,16 @@ def delete_fee_note(request, fee_note_id):
 @login_required
 def generate_fee_note_pdf(request, fee_note_id):
     fee_note = FeeNote.objects.get(id=fee_note_id)
+    font_path = 'gothic.ttf'
+
     image = Image.open('note.jpg')
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('arial.ttf', 70) if 'arial.ttf' else ImageFont.load_default()
+    font = ImageFont.truetype(font_path, 70) if 'arial.ttf' else ImageFont.load_default()
     color = (0, 0, 0)
     draw.text((360, 900), fee_note.case.get_insurance_Company_display(), font=font, fill=color)
-    font = ImageFont.truetype('arial.ttf', 45) if 'arial.ttf' else ImageFont.load_default()
+    font = ImageFont.truetype(font_path, 45) if 'arial.ttf' else ImageFont.load_default()
     draw.text((1265, 810), now().strftime("%Y-%m-%d"), font=font, fill=color)
-    font = ImageFont.truetype('arial.ttf', 70) if 'arial.ttf' else ImageFont.load_default()
+    font = ImageFont.truetype(font_path, 70) if font_path else ImageFont.load_default()
     amounts = [fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee, fee_note.out_of_office_allowance, fee_note.travel_and_assessment_fee, fee_note.photos, fee_note.value_added_tax, fee_note.total]
     x_pos = 1120
     positions = [

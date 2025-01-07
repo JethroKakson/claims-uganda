@@ -22,6 +22,7 @@ class Staff(models.Model):
     department = models.CharField(max_length=100, choices=departments)
     status = models.CharField(max_length=100, choices=statuses, default='Active')
     appointments = models.ManyToManyField('Appointments.Appointment', blank=True, related_name='assessor_appointments')
+    submissions_received = models.ManyToManyField('Submissions.Submission', blank=True, related_name='staff_submissions_received')
     last_seen = models.DateTimeField(null=True)
 
     def __str__(self):
