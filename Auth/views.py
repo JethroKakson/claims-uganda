@@ -148,7 +148,7 @@ def password_reset(request):
         user = User.objects.filter(email=email).first()
         if user is None:
             messages.error(request, 'User does not exist.')
-            return redirect('password_reset')
+            return redirect('.')
         else:
             reset_password_link = ResetPasswordLink.objects.create(user=user, expires_at=timezone.now() + timedelta(days=1))
             reset_password_link.save()
