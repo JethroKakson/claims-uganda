@@ -121,34 +121,27 @@ def generate_fee_note_pdf(request, fee_note_id):
     # Draw texts
     draw.text((360, 900), fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
-    draw.text((560, 1130), fee_note.case.description, font=font_medium, fill=color)
+    draw.text((560, 1130), fee_note.case.description.upper(), font=font_medium, fill=color)
     draw.text((560, 1240), fee_note.case.client, font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
-    draw.text((800, 2625), words.upper(), font=font_small, fill=color)
+    draw.text((800, 2625), words.lower(), font=font_small, fill=color)
 
     amounts = [
         fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee,
         fee_note.out_of_office_allowance, fee_note.travel_and_assessment_fee,
         fee_note.photos, fee_note.value_added_tax, fee_note.total
     ]
-
     y_positions = [1500, 1650, 1790, 1930, 2050, 2150, 2250]
     for idx, y in enumerate(y_positions):
         if amounts[idx] > 0:
-            draw.text((1120, y), f"{intcomma(int(amounts[idx]))} UGX", font=font_amount, fill=color)
+            draw.text((1120, y), f"{intcomma(int(amounts[idx]))}", font=font_amount, fill=color)
     buffer = BytesIO()
-    
-    # Ensure the image is in RGB mode for PDF
     if image.mode != "RGB":
         image = image.convert("RGB")
-    
-    # Save the image to the buffer as a PDF
     image.save(buffer, 'PDF')
-    buffer.seek(0)  # Rewind the buffer to the beginning
-    
-    # Return the PDF as a response
+    buffer.seek(0)
     response = HttpResponse(buffer, content_type="application/pdf")
     response['Content-Disposition'] = f'inline; filename="fee_note_{fee_note_id}.pdf"'
 
@@ -178,12 +171,12 @@ def pdf_preview(request, fee_note_id):
     # Draw texts
     draw.text((360, 900), fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
-    draw.text((560, 1130), fee_note.case.description, font=font_medium, fill=color)
+    draw.text((560, 1130), fee_note.case.description.upper(), font=font_medium, fill=color)
     draw.text((560, 1240), fee_note.case.client, font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
-    draw.text((800, 2625), words.upper(), font=font_small, fill=color)
+    draw.text((800, 2625), words.lower(), font=font_small, fill=color)
 
     amounts = [
         fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee,
@@ -194,7 +187,7 @@ def pdf_preview(request, fee_note_id):
     y_positions = [1500, 1650, 1790, 1930, 2050, 2150, 2250]
     for idx, y in enumerate(y_positions):
         if amounts[idx] > 0:
-            draw.text((1120, y), f"{intcomma(int(amounts[idx]))} UGX", font=font_amount, fill=color)
+            draw.text((1120, y), f"{intcomma(int(amounts[idx]))}", font=font_amount, fill=color)
     
     # Save to BytesIO
     output = BytesIO()

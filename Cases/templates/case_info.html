@@ -9,9 +9,29 @@
                 <h3 class="card-title">Case Information</h3>
                 <div class="card-tools">
                     {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
-                    <a href="" class="btn btn-success">
+                    {% if case.status == 'In Progress' or case.status == 'Pending' %}
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#closeCaseModal">
                         Close Case
-                    </a>
+                    </button>
+
+                    <div class="modal fade" id="closeCaseModal" tabindex="-1" role="dialog" aria-labelledby="closeCaseModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="closeCaseModalLabel">Close Case</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to close this case?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a href="{% url 'close_case' case.id %}" class="btn btn-success">Close Case</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>
