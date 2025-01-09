@@ -19,6 +19,7 @@ urlpatterns = [
     path('support-documents/', include('SupportDocuments.urls')),
     path('notifications/', include('Notifications.urls')),
     path('reimbursements/', include('StaffReimbursement.urls')),
+    path('assessors/', include('Assessors.urls')),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('accounts/', include('allauth.urls')),
     path('api/v1/', api.urls),
