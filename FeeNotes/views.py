@@ -194,7 +194,7 @@ def pdf_preview(request, fee_note_id):
     image.save(output, format="JPEG")
     output.seek(0)
 
-    response = FileResponse(output, content_type="image/jpeg")
+    response = HttpResponse(output.getvalue(), content_type="image/jpeg")
     response['Content-Disposition'] = f'inline; filename="fee_note_{fee_note_id}.jpg"'
 
     return response
