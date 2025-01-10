@@ -13,6 +13,7 @@ from django.core import mail
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 import os 
+from django.db.models import Q
 
 
 @receiver(post_delete, sender=Report)
@@ -49,6 +50,9 @@ def reports(request):
         reports = request.user.staff.assessor.reports.all()
     else:
         reports = Report.objects.all()
+    if request.GET.get('query'):
+        query = request.GET.get('query')
+        reports = reports.filter(Q(case__reference_number__icontains=query) | Q(case__insurance_Company__icontains=query) | Q(case__policy__icontains=query) | Q(case__client__icontains=query))
     page = request.GET.get('page', 1)
     paginator = Paginator(reports, 10)
     try:
@@ -57,7 +61,7 @@ def reports(request):
         reports = paginator.page(1)
     except EmptyPage:
         reports = paginator.page(paginator.num_pages)
-    return render(request, 'reports.html', {'reports': reports, 'form': ReportForm(), 'staffs': staff})
+    return render(request, 'reports.html', {'reports': reports, 'form': ReportForm(), 'staffs': staff, 'search': True if request.GET.get('query') else False, 'query': request.GET.get('query')})
 
 
 @login_required

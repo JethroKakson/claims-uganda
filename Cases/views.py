@@ -15,6 +15,8 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from Staff.models import Staff
 from django.urls import reverse
+from django.db.models import Q
+
 
 @login_required
 def cases(request):
@@ -26,6 +28,9 @@ def cases(request):
         cases = request.user.staff.assessor.cases.all()
     else:
         cases = Case.objects.all()
+    if request.GET.get('query'):
+        query = request.GET.get('query')
+        cases = cases.filter(Q(reference_number__icontains=query) | Q(insurance_Company__icontains=query) | Q(policy__icontains=query) | Q(client__icontains=query))
     paginator = Paginator(cases, 10)
     page = request.GET.get('page')
     try:
@@ -36,7 +41,9 @@ def cases(request):
         page_obj = paginator.page(paginator.num_pages)
     context = {
         'page_obj': page_obj,
-        'form': form
+        'form': form,
+        'search': True if request.GET.get('query') else False,
+        'query': request.GET.get('query'),
     }
     return render(request, 'cases.html', context)
 

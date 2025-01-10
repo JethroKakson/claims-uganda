@@ -114,8 +114,13 @@
             {% empty %}
             <tr>
               <td colspan="7">
+                {% if search %}
+                <i class="fas fa-empty"></i>
+                No search results found
+                {% else %}
                 <i class="fas fa-empty"></i>
                 No Fee Notes Registered
+                {% endif %}
               </td>
             </tr>
             {% endfor %}
