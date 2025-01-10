@@ -13,6 +13,7 @@ from django.utils.timezone import now
 from io import BytesIO
 from num2words import num2words
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.db.models import Q
 
 
 @receiver(post_delete, sender=FeeNote)
@@ -33,7 +34,9 @@ def fee_notes(request):
         fee_notes = request.user.staff.assessor.fee_notes.all()
     else:
         fee_notes = FeeNote.objects.all()
-
+    if request.GET.get('query'):
+        query = request.GET.get('query')
+        fee_notes = fee_notes.filter(Q(case__reference_number__icontains=query) | Q(case__insurance_Company__icontains=query) | Q(case__policy__icontains=query) | Q(case__client__icontains=query))
     page = request.GET.get('page', 1)
     paginator = Paginator(fee_notes, 10)
     try:
@@ -42,7 +45,7 @@ def fee_notes(request):
         fee_notes = paginator.page(1)
     except EmptyPage:
         fee_notes = paginator.page(paginator.num_pages)
-    return render(request, 'fee_notes.html', {'form': form, 'fee_notes': fee_notes})
+    return render(request, 'fee_notes.html', {'form': form, 'fee_notes': fee_notes, 'search': True if request.GET.get('query') else False, 'query': request.GET.get('query')})
 
 
 @login_required
@@ -133,7 +136,7 @@ def generate_fee_note_pdf(request, fee_note_id):
         fee_note.out_of_office_allowance, fee_note.travel_and_assessment_fee,
         fee_note.photos, fee_note.value_added_tax, fee_note.total
     ]
-    
+
     y_positions = [1500, 1650, 1790, 1930, 2050, 2150, 2250]
     for idx, y in enumerate(y_positions):
         if amounts[idx] > 0:

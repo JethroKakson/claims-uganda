@@ -100,8 +100,13 @@
             {% empty %}
             <tr>
               <td colspan="6">
+                {% if search %}
+                <i class="fas fa-empty"></i>
+                No search results found
+                {% else %}
                 <i class="fas fa-empty"></i>
                 No cases reported
+                {% endif %}
               </td>
             </tr>
             {% endfor %}

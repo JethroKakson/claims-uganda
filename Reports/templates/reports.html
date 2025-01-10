@@ -93,9 +93,15 @@
                                 </td>
                             </tr>
                             {% empty %}
+                            {% if search %}
+                            <tr>
+                                <td colspan="4">No search results found.</td>
+                            </tr>
+                            {% else %}
                             <tr>
                                 <td colspan="4">No reports uploaded yet.</td>
                             </tr>
+                            {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
