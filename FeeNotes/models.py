@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 statuses = [('Unpaid', 'Unpaid'), ('Paid', 'Paid')]
 
@@ -9,7 +10,9 @@ currencies = (
 )
 
 class FeeNote(models.Model):
+    date_created = models.DateTimeField(default=now)
     case = models.OneToOneField('Cases.Case', on_delete=models.SET_NULL, null=True, related_name='_feenote_case')
+    fee_note_number = models.PositiveIntegerField(unique=True, null=True)
     currency = models.CharField(max_length=50, choices=currencies, default='UGX')
     inspection_and_assessment_fee = models.DecimalField(max_digits=10, decimal_places=2)
     accommodation_fee = models.DecimalField(max_digits=10, decimal_places=2)
