@@ -40,7 +40,6 @@ DEFAULT_FROM_EMAIL = 'Claims System <info@claimsug.com>'
 
 SESSION_COOKIE_AGE = 18000
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -118,6 +117,7 @@ DATABASES = {
     }
 }
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -128,7 +128,6 @@ DATABASES = {
         'PORT':'3306',
     }
 }
-
 
 
 SITE_ID = 1

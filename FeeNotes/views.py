@@ -4,7 +4,7 @@ from .models import FeeNote
 from .forms import FeeNoteForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from PIL import Image, ImageDraw, ImageFont
 import os
@@ -15,6 +15,13 @@ from num2words import num2words
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db.models import Q
 
+@receiver(pre_save, sender=FeeNote)
+def number_fee_note(sender, instance, **kwargs):
+    fee_note = instance
+    if not fee_note.pk:
+        fee_notes = FeeNote.objects.filter(date_created__date__year=now().year).count()
+        fee_note.fee_note_number = fee_notes + 1
+
 
 @receiver(post_delete, sender=FeeNote)
 def delete_file(sender, instance, **kwargs):
@@ -22,8 +29,6 @@ def delete_file(sender, instance, **kwargs):
         os.remove(instance.valid_fee_note.path)
     except:
         pass
-
-    
 
 
 @login_required
@@ -118,10 +123,14 @@ def generate_fee_note_pdf(request, fee_note_id):
     font_medium = ImageFont.truetype(font_path, 40) if font_path else font_default
     font_amount = ImageFont.truetype(font_path, 60) if font_path else font_default
     font_large = ImageFont.truetype(font_path, 70) if font_path else font_default
+    font_ref = ImageFont.truetype(font_path, 50) if font_path else font_default
 
     color = (0, 0, 0)
 
     # Draw texts
+    fee_note_ref = f'Pro. Inv/{str(fee_note.date_created.date().year)[2:]}/{fee_note.fee_note_number}'
+    draw.rectangle((1800, 700, 2200, 780), fill=(255, 255, 255))
+    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
     draw.text((360, 900), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
     draw.text((560, 1130), fee_note.case.description.upper(), font=font_medium, fill=color)
@@ -129,7 +138,7 @@ def generate_fee_note_pdf(request, fee_note_id):
     draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'.strip(',')
-    draw.text((800, 2625), words.lower(), font=font_small, fill=color)
+    draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_small, fill=color)
 
     amounts = [
         fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee,
@@ -156,6 +165,7 @@ def generate_fee_note_pdf(request, fee_note_id):
 def pdf_preview(request, fee_note_id):
     fee_note = FeeNote.objects.get(id=fee_note_id)
     font_path = 'gothic.ttf'
+    roman = 'roman.ttf'
     
     if not os.path.isfile(font_path):
         font_path = None
@@ -169,10 +179,14 @@ def pdf_preview(request, fee_note_id):
     font_medium = ImageFont.truetype(font_path, 40) if font_path else font_default
     font_large = ImageFont.truetype(font_path, 70) if font_path else font_default
     font_amount = ImageFont.truetype(font_path, 60) if font_path else font_default
+    font_ref = ImageFont.truetype(font_path, 50) if font_path else font_default
 
     color = (0, 0, 0)
 
     # Draw texts
+    fee_note_ref = f'Pro. Inv/{str(fee_note.date_created.date().year)[2:]}/{fee_note.fee_note_number}'
+    draw.rectangle((1800, 700, 2200, 780), fill=(255, 255, 255))
+    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
     draw.text((360, 900), 'M/S '+fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
     draw.text((560, 1130), fee_note.case.description.upper(), font=font_medium, fill=color)
@@ -180,7 +194,7 @@ def pdf_preview(request, fee_note_id):
     draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'.strip(',')
-    draw.text((800, 2625), words.lower(), font=font_small, fill=color)
+    draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_small, fill=color)
 
     amounts = [
         fee_note.inspection_and_assessment_fee, fee_note.accommodation_fee,
