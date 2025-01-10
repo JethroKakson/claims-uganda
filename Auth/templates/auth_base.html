@@ -45,6 +45,25 @@
     <script src="{% static 'login/js/misc.js' %}"></script>
     <script src="{% static 'login/js/settings.js' %}"></script>
     <script src="../../assets/js/todolist.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("body").on("click", "button, a", function(e) {
+          if ($(this).hasClass("clicked")) {
+            e.preventDefault();
+            alert("Please wait for 10 seconds to elapse.");
+            return false;
+          }
+          // Add the 'clicked' class
+          $(this).addClass("clicked");
+    
+          // Remove the 'clicked' class after 10 seconds
+          const button = $(this);
+          setTimeout(() => {
+            button.removeClass("clicked");
+          }, 10000);
+        });
+      });
+    </script>
     
   </body>
 </html>

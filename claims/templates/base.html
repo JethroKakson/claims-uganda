@@ -310,6 +310,25 @@
       fillColor: "rgba(255, 165, 52, .14)",
     });
   </script>
+  <script>
+    $(document).ready(function() {
+      $("body").on("click", "button:not(.modal), a:not(.modal)", function(e) {
+        if ($(this).hasClass("clicked")) {
+          e.preventDefault();
+          alert("Please wait for 10 seconds to elapse.");
+          return false;
+        }
+        // Add the 'clicked' class
+        $(this).addClass("clicked");
+  
+        // Remove the 'clicked' class after 10 seconds
+        const button = $(this);
+        setTimeout(() => {
+          button.removeClass("clicked");
+        }, 10000);
+      });
+    });
+  </script>
 </body>
 
 </html>
