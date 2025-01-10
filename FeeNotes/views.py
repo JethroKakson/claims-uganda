@@ -119,13 +119,13 @@ def generate_fee_note_pdf(request, fee_note_id):
     color = (0, 0, 0)
 
     # Draw texts
-    draw.text((360, 900), fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
+    draw.text((360, 900), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
     draw.text((560, 1130), fee_note.case.description.upper(), font=font_medium, fill=color)
-    draw.text((560, 1240), fee_note.case.client, font=font_medium, fill=color)
+    draw.text((560, 1240), 'M/S '+fee_note.case.client, font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
 
-    words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
+    words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'.strip(',')
     draw.text((800, 2625), words.lower(), font=font_small, fill=color)
 
     amounts = [
@@ -133,6 +133,7 @@ def generate_fee_note_pdf(request, fee_note_id):
         fee_note.out_of_office_allowance, fee_note.travel_and_assessment_fee,
         fee_note.photos, fee_note.value_added_tax, fee_note.total
     ]
+    
     y_positions = [1500, 1650, 1790, 1930, 2050, 2150, 2250]
     for idx, y in enumerate(y_positions):
         if amounts[idx] > 0:
@@ -169,13 +170,13 @@ def pdf_preview(request, fee_note_id):
     color = (0, 0, 0)
 
     # Draw texts
-    draw.text((360, 900), fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
+    draw.text((360, 900), 'M/S '+fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
     draw.text((560, 1130), fee_note.case.description.upper(), font=font_medium, fill=color)
-    draw.text((560, 1240), fee_note.case.client, font=font_medium, fill=color)
+    draw.text((560, 1240), 'M/S '+fee_note.case.client, font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%Y-%m-%d"), font=font_medium, fill=color)
 
-    words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
+    words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'.strip(',')
     draw.text((800, 2625), words.lower(), font=font_small, fill=color)
 
     amounts = [
