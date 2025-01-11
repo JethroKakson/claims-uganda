@@ -1,10 +1,10 @@
 name: Django CI
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_run:
+    workflows: ["MySQL CI"]
+    types:
+      - completed
 
 jobs:
   build:
