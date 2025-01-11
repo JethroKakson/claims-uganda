@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy to Claims Server
 
 on:
   push:
@@ -6,23 +6,18 @@ on:
       - master
 
 jobs:
-  deploy:
+  trigger-pull:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Set up SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.CLAIMS_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        # Add the server's SSH key to known_hosts
-        ssh-keyscan -p 4242 claimsug.com >> ~/.ssh/known_hosts
-        # Disable host key checking to avoid any issues with the key mismatch
-        echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-
     - name: Deploy to Server
       run: |
-        ssh -o ConnectTimeout=30 -p 4242 claimsug@claimsug.com "cd /home1/claimsug/projects/claims-uganda && git pull"
+        response=$(curl -s -w "%{http_code}" -o response.json "https://claimsug.com/deploy/")
+        if [[ "$response" -eq 200 ]]; then
+          echo "Repository updated successfully!"
+          cat response.json
+        else
+          echo "Failed to update repository."
+          cat response.json
+          exit 1
+        fi
