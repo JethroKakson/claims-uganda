@@ -16,6 +16,18 @@ import sys
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+import subprocess
+from django.http import JsonResponse
+from django.conf import settings
+
+def git_pull(request):
+    try:
+        repo_path = settings.BASE_DIR
+        subprocess.check_call(['git', '-C', repo_path, 'stash'])
+        subprocess.check_call(['git', '-C', repo_path, 'pull'])
+        return JsonResponse({"status": "success", "message": "Repository updated successfully."})
+    except subprocess.CalledProcessError as e:
+        return JsonResponse({"status": "error", "message": f"Failed to pull the repository: {str(e)}"}, status=500)
 
 @receiver(got_request_exception)
 def track_errors(sender, **kwargs):
