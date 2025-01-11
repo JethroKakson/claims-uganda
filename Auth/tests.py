@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from Staff.models import Staff
 
 class LoginUserTestCase(TestCase):
     def test_login_user_active(self):
