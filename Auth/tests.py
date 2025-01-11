@@ -1,4 +1,6 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
+from Staff.models import Staff
 
 class LoginUserTestCase(TestCase):
     def test_login_user_active(self):
@@ -10,7 +12,7 @@ class LoginUserTestCase(TestCase):
 
     def test_login_user_inactive(self):
         user = User.objects.create_user('test', 'test@example.com', 'password')
-        user.staff = Staff.objects.create(status='Inactive')
+        user.staff = Staff.objects.create(status='Inactive', user=user)
         user.save()
         response = self.client.post('/auth/login/', {'username': 'test', 'password': 'password'})
         self.assertRedirects(response, '/auth/login/')
