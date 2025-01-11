@@ -4,3 +4,4 @@ pymysql
 pillow
 plotly
 django-allauth
+requests
