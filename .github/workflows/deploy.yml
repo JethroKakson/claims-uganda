@@ -16,10 +16,16 @@ jobs:
     - name: Set up SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+        echo "${{ secrets.CLAIMS_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -p 4242 claimsug.com >> ~/.ssh/known_hosts
+        # Debugging: Check contents of id_rsa (remove after debugging)
+        cat ~/.ssh/id_rsa
+
+    - name: Debug ssh-keyscan
+      run: |
+        ssh-keyscan -p 4242 claimsug.com
 
     - name: Deploy to Server
       run: |
-        ssh -p 4242 claimsug@claimsug.com "cd /home1/claimsug/projects/claims-uganda && git pull"
+        ssh -p 4242 claimsug@claimsug.com "cd /home1/claimsug/projects/claims-uganda && git pull origin master"
