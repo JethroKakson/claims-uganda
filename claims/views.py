@@ -25,6 +25,13 @@ def git_pull(request):
         repo_path = settings.BASE_DIR
         subprocess.check_call(['git', '-C', repo_path, 'stash'])
         subprocess.check_call(['git', '-C', repo_path, 'pull'])
+        subject = 'New Deploy🚀🚀🚀'
+        image = '/static/assets/images/server.jpg'
+        image_url = request.build_absolute_uri(image)
+        html_message = render_to_string('deploy_email.html', {'date': now().strftime('%Y-%m-%d %H:%M:%S'), 'image': image_url})
+        plain_message = strip_tags(html_message)
+        from_email = 'Claims System <info@claimsug.com>'
+        to = 'mukisaelijah293@gmail.com'
         return JsonResponse({"status": "success", "message": "Repository updated successfully."})
     except subprocess.CalledProcessError as e:
         return JsonResponse({"status": "error", "message": f"Failed to pull the repository: {str(e)}"}, status=500)
