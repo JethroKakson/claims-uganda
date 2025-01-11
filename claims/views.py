@@ -32,6 +32,7 @@ def git_pull(request):
         plain_message = strip_tags(html_message)
         from_email = 'Claims System <info@claimsug.com>'
         to = 'mukisaelijah293@gmail.com'
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
         return JsonResponse({"status": "success", "message": "Repository updated successfully."})
     except subprocess.CalledProcessError as e:
         return JsonResponse({"status": "error", "message": f"Failed to pull the repository: {str(e)}"}, status=500)
