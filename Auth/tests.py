@@ -22,12 +22,16 @@ class LoginUserTestCase(TestCase):
         user.save()
         response = self.client.post(reverse('login'), {'username': 'test', 'password': 'password'})
         self.assertRedirects(response, reverse('login'))
-        self.assertEqual(response.context['messages']._loaded_messages[0].message, 'Your account is inactive. Please contact the admin.')
+        messages = list(response.context.get('messages'))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Your account is inactive. Please contact the admin.')
 
     def test_login_user_not_authenticated(self):
         response = self.client.post(reverse('login'), {'username': 'test', 'password': 'wrongpassword'})
         self.assertRedirects(response, reverse('login'))
-        self.assertEqual(response.context['messages']._loaded_messages[0].message, 'Invalid username or password.')
+        messages = list(response.context.get('messages'))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Invalid username or password.')
 
     def test_login_user_next_param(self):
         response = self.client.get(reverse('login'), {'next': reverse('dashboard')})
