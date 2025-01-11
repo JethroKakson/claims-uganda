@@ -3,3 +3,4 @@ django-ninja
 pymysql
 pillow
 plotly
+django-allauth
