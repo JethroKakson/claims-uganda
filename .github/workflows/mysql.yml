@@ -1,0 +1,23 @@
+name: MYSQL CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_DATABASE: claimsug_database
+      DB_USER: claimsug_user
+      DB_PASSWORD: claimsug12@
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
