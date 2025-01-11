@@ -7,3 +7,4 @@ django-allauth
 requests
 pyjwt
 cryptography
+num2words
