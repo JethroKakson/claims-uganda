@@ -121,14 +121,16 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'claimsug_database',
-        'USER': 'claimsug_user',
-        'PASSWORD': 'claimsug12@',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'NAME': os.getenv('DB_NAME', 'claimsug_database'),
+        'USER': os.getenv('DB_USER', 'claimsug_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'claimsug12@'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),  # Use the MySQL service name in GitHub Actions
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'TEST': {
+            'NAME': 'test_claimsug_database',  # Explicit test database name
+        },
     }
 }
-
 
 SITE_ID = 1
 
