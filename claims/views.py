@@ -26,7 +26,7 @@ def git_pull(request):
         subprocess.check_call(['git', '-C', repo_path, 'stash'])
         subprocess.check_call(['git', '-C', repo_path, 'pull'])
         subject = 'New Deploy🚀🚀🚀'
-        image = '/static/assets/images/server.jpg'
+        image = '/static/assets/img/server.jpg'
         image_url = request.build_absolute_uri(image)
         html_message = render_to_string('deploy_email.html', {'date': now().strftime('%Y-%m-%d %H:%M:%S'), 'image': image_url})
         plain_message = strip_tags(html_message)
