@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from Staff.models import Staff
 from django.urls import reverse
 from allauth.socialaccount.models import SocialApp
+from claims.settings import client_id, client_secret
 
 class LoginUserTestCase(TestCase):
     def setUp(self):
-        self.social_app = SocialApp.objects.create(provider='google', name='google', client_id='1234567890', secret='1234567890')
+        self.social_app = SocialApp.objects.create(provider='google', name='google', client_id=client_id, secret=client_secret)
 
     def test_login_user_active(self):
         user = User.objects.create_user('test', 'test@example.com', 'password')
