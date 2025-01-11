@@ -125,7 +125,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', 'claimsug_database'),
         'USER': os.getenv('DB_USER', 'claimsug_user'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'claimsug12@'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),  # Use the MySQL service name in GitHub Actions
+        'HOST': os.getenv('DB_HOST', 'localhost'),  # Use the MySQL service name in GitHub Actions
         'PORT': os.getenv('DB_PORT', '3306'),
         'TEST': {
             'NAME': 'test_claimsug_database',  # Explicit test database name
