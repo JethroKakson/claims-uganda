@@ -5,7 +5,7 @@ from Staff.models import Staff
 class LoginUserTestCase(TestCase):
     def test_login_user_active(self):
         user = User.objects.create_user('test', 'test@example.com', 'password')
-        user.staff = Staff.objects.create(status='Active')
+        user.staff = Staff.objects.create(status='Active', user=user)
         user.save()
         response = self.client.post('/auth/login/', {'username': 'test', 'password': 'password'})
         self.assertRedirects(response, '/dashboard/')
