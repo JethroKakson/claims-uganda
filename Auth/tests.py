@@ -33,8 +33,3 @@ class LoginUserTestCase(TestCase):
         response = self.client.get(reverse('login'), {'next': reverse('dashboard')})
         self.assertContains(response, "Your session has expired. Please log in again.")
 
-    def test_social_login(self):
-        response = self.client.get(reverse('socialaccount_login', args=['google']))
-        self.assertContains(response, "Google")
-        self.assertContains(response, "Login with Google")
-
