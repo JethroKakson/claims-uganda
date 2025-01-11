@@ -21,6 +21,7 @@ urlpatterns = [
     path('reimbursements/', include('StaffReimbursement.urls')),
     path('assessors/', include('Assessors.urls')),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('deploy/', views.git_pull, name='git_pull'),
     path('accounts/', include('allauth.urls')),
     path('api/v1/', api.urls),
     path('admin/', admin.site.urls),
