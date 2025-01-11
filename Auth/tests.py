@@ -7,7 +7,7 @@ from claims.settings import SOCIAL_AUTH_GOOGLE_CLIENT_ID, SOCIAL_AUTH_GOOGLE_SEC
 
 class LoginUserTestCase(TestCase):
     def setUp(self):
-        self.social_app = SocialApp.objects.create(provider='google', name='google', client_id=SOCIAL_AUTH_GOOGLE_CLIENT_ID, secret=SOCIAL_AUTH_GOOGLE_SECRET)
+        self.social_app = SocialApp.objects.create(provider='Google', name='Google Auth', client_id=SOCIAL_AUTH_GOOGLE_CLIENT_ID, secret_key=SOCIAL_AUTH_GOOGLE_SECRET)
 
     def test_login_user_active(self):
         user = User.objects.create_user('test', 'test@example.com', 'password')
