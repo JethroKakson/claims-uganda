@@ -47,6 +47,10 @@ jobs:
             sleep 2
           done
 
+      - name: Grant privileges for test databases
+        run: |
+          mysql -u root -prootpassword -h 127.0.0.1 -e "GRANT ALL PRIVILEGES ON test_%.* TO 'claimsug_user'@'%'; FLUSH PRIVILEGES;"
+
       - name: Run Django migrations
         env:
           DB_NAME: claimsug_database
