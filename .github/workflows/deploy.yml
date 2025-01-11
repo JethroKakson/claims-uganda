@@ -18,14 +18,11 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.CLAIMS_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        # Disable host key checking to speed up SSH setup
+        # Add the server's SSH key to known_hosts
+        ssh-keyscan -p 4242 claimsug.com >> ~/.ssh/known_hosts
+        # Disable host key checking to avoid any issues with the key mismatch
         echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-
-    - name: Debug private key
-      run: |
-        echo "${{ secrets.CLAIMS_SSH_KEY }}" > ~/.ssh/id_rsa
-        cat ~/.ssh/id_rsa
 
     - name: Deploy to Server
       run: |
-        ssh -p 4242 claimsug@claimsug.com "cd /home1/claimsug/projects/claims-uganda && git pull"
+        ssh -o ConnectTimeout=30 -p 4242 claimsug@claimsug.com "cd /home1/claimsug/projects/claims-uganda && git pull"
