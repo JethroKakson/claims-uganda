@@ -14,8 +14,7 @@ jobs:
       run: |
         response=$(curl -s -w "%{http_code}" -o response.json "https://claimsug.com/deploy/")
         if [[ "$response" -eq 200 ]]; then
-          echo "Repository updated successfully!"
-          cat response.json
+          echo "Repository has been updated successfully!"
         else
           echo "Failed to update repository."
           cat response.json
