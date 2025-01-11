@@ -1,4 +1,4 @@
-name: MYSQL CI
+name: MySQL Tests
 
 on:
   push:
@@ -10,15 +10,55 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    env:
-      DB_DATABASE: claimsug_database
-      DB_USER: claimsug_user
-      DB_PASSWORD: claimsug12@
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: claimsug_database
+          MYSQL_USER: claimsug_user
+          MYSQL_PASSWORD: claimsug12@
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Start MySQL
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
         run: |
-          sudo /etc/init.d/mysql start
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Wait for MySQL
+        run: |
+          until mysqladmin ping -h "127.0.0.1" --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+
+      - name: Run Django migrations
+        env:
+          DB_NAME: claimsug_database
+          DB_USER: claimsug_user
+          DB_PASSWORD: claimsug12@
+          DB_HOST: 127.0.0.1
+        run: python manage.py migrate
+
+      - name: Run tests
+        env:
+          DB_NAME: claimsug_database
+          DB_USER: claimsug_user
+          DB_PASSWORD: claimsug12@
+          DB_HOST: 127.0.0.1
+        run: python manage.py test
