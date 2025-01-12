@@ -110,6 +110,7 @@ def submit_report(request, report_id):
     if request.method == 'POST':
         comment = request.POST.get('message')
         report.message = comment
+        report.last_author = request.user.staff
         report.status = 'Submitted'
         report.save()
         messages.success(request, 'Report submitted successfully.')
