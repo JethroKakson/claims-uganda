@@ -19,5 +19,6 @@ class  Report(models.Model):
     report_type = models.CharField(max_length=50, choices=report_types, default='Not Selected')
     file = models.FileField(upload_to='Reports/files')
     status  = models.CharField(max_length=50, choices=statuses, default='In Progress')
+    message = models.TextField(null=True)
     submissions = models.ManyToManyField('Submissions.Submission', related_name='report_submissions')
     

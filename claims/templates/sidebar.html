@@ -53,10 +53,18 @@
             </a>
           </li>
           {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
-          <li class="nav-item {% if 'reports' in request.path %}active{% endif %}">
+          <li class="nav-item {% if 'reports' in request.path and 'report_review' not in request.path %}active{% endif %}">
             <a href="{% url 'reports' %}">
               <i class="fas fa-file-alt"></i>
               <p>Reports</p>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.staff.department == 'Administration' %}
+          <li class="nav-item {% if 'report_review' in request.path %}active{% endif %}">
+            <a href="{% url 'report-review' %}">
+              <i class="fas fa-inbox"></i>
+              <p>Report Review</p>
             </a>
           </li>
           {% endif %}

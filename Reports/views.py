@@ -64,6 +64,10 @@ def reports(request):
     return render(request, 'reports.html', {'reports': reports, 'form': ReportForm(), 'staffs': staff, 'search': True if request.GET.get('query') else False, 'query': request.GET.get('query')})
 
 
+def report_review(request):
+    reports = Report.objects.filter(status='Submitted')
+    return render(request, 'report_review.html', {'reports': reports})
+
 @login_required
 def download_report(request, report_id):
     report = Report.objects.get(id=report_id)
@@ -104,13 +108,12 @@ def submit_report(request, report_id):
     """
     report = Report.objects.get(id=report_id)
     if request.method == 'POST':
-        comment = request.POST.get('comment')
-        submission = report.submissions.create(report=report)
+        comment = request.POST.get('message')
+        report.message = comment
         report.status = 'Submitted'
         report.save()
-        submission.comments.create(text=comment, report=report, author=request.user.staff)
         messages.success(request, 'Report submitted successfully.')
-        return redirect('report_info', report_id=report_id)
+        return redirect('reports')
 
 
 def share_report(request, report_id):
