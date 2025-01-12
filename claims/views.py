@@ -20,11 +20,14 @@ import subprocess
 from django.http import JsonResponse
 from django.conf import settings
 
+command = 'source /home1/claimsug/virtualenv/projects/claims-uganda/3.9/bin/activate && cd /home1/claimsug/projects/claims-uganda && python manage.py migrate'
+
 def git_pull(request):
     try:
         repo_path = settings.BASE_DIR
         subprocess.check_call(['git', '-C', repo_path, 'stash'])
         subprocess.check_call(['git', '-C', repo_path, 'pull'])
+        subprocess.check_call(command, shell=True, executable='/bin/bash')
         subject = 'New Deploy🚀🚀🚀'
         image = '/static/assets/img/server.jpg'
         image_url = request.build_absolute_uri(image)
