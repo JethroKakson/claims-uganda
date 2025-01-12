@@ -52,7 +52,7 @@
           </thead>
           <tbody>
             {% for case in page_obj %}
-            <tr data-bs-toggle="tooltip" title="Assigned to {{case.assessor.staff.user.first_name}}">
+            <tr ondblclick="window.location.href='{% url 'case_info' case.id %}'" data-bs-toggle="tooltip" title="Assigned to {{case.assessor.staff.user.first_name}}">
               <td>{{case.date_reported}}</td>
               <td>{{case.get_insurance_Company_display}}</td>
               <td title="{{case.get_policy_display}}">{{case.policy}}</td>
@@ -83,14 +83,6 @@
                     </div>
                   </div>
                   {% endif %}
-
-
-                  <a href="{% url 'case_info' case.id %}">
-                    <button title="More information" data-bs-toggle="tooltip" type="button" class="btn btn-link btn-info"
-                      data-bs-toggle="modal" data-bs-target="#detailsCaseModal" data-case-id="{{case.id}}">
-                      <i class="fa fa-info"></i>
-                    </button>
-                  </a>
                 </div>
 
 
