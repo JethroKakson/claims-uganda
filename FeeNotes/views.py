@@ -225,7 +225,7 @@ def pdf_preview(request, fee_note_id):
     for idx, y in enumerate(y_positions):
         if amounts[idx] > 0:
             draw.text((1250, y), f"{intcomma(int(amounts[idx]))}", font=font_amount, fill=color)
-    buffer = BytesIO()
+    output = BytesIO()
     image.save(output, format="JPEG")
     output.seek(0)
 
