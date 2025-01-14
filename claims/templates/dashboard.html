@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div
@@ -284,4 +285,9 @@
         </div>
       </div>
     </div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+<script src="{% static 'assets/js/setting-demo.js' %}"></script>
+  <script src="{% static 'assets/js/demo.js' %}"></script>
 {% endblock %}
