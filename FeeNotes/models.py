@@ -19,6 +19,7 @@ class FeeNote(models.Model):
     out_of_office_allowance = models.DecimalField(max_digits=10, decimal_places=2)
     travel_and_assessment_fee = models.DecimalField(max_digits=10, decimal_places=2)
     photos = models.DecimalField(max_digits=10, decimal_places=2)
+    travel_detail = models.CharField(max_length=100, null=True, blank=True)
     value_added_tax = models.DecimalField(max_digits=10, decimal_places=2)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     valid_fee_note = models.FileField(upload_to='FeeNotes/files', null=True)
