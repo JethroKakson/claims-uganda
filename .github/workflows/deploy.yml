@@ -1,0 +1,22 @@
+name: Deploy to Claims Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to Server
+      run: |
+        response=$(curl -s -w "%{http_code}" -o response.json "https://claimsug.com/deploy/")
+        if [[ "$response" -eq 200 ]]; then
+          echo "Repository has been updated successfully!"
+        else
+          echo "Failed to update repository."
+          cat response.json
+          exit 1
+        fi
