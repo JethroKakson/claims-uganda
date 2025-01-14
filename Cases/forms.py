@@ -16,6 +16,7 @@ class CaseForm(ModelForm):
             'description': widgets.Textarea(attrs={'class': 'form-control  mb-3'}),
             'reference_number': widgets.TextInput(attrs={'class': 'form-control mb-3'}),
             'assessor': widgets.Select(attrs={'class': 'form-control mb-3'}),
+            'customer_reference': widgets.TextInput(attrs={'class': 'form-control mb-3'}),
         }
         labels = {
             'date_reported': 'Date Reported',

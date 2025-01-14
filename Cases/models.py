@@ -42,6 +42,7 @@ class Case(models.Model):
     comment = models.TextField(null=True)
     pictures = models.ManyToManyField('Pictures.Picture', blank=True, related_name='case_pictures')
     reference_number = models.CharField(max_length=50)
+    customer_reference = models.CharField(max_length=100, default='Not Advised')
     status = models.CharField(max_length=50, choices=statuses, default='Pending')
     reports = models.ManyToManyField('Reports.Report', blank=True, related_name='case_reports')
     assessor = models.ForeignKey('Assessors.Assessor', on_delete=models.SET_NULL, null=True, related_name='_case_assessor')
