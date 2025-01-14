@@ -200,7 +200,7 @@ $.notify({
 		from: "bottom",
 		align: "right"
 	},
-	time: 1000,
+	time: 100,
 });
 
 // Jsvectormap
