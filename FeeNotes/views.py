@@ -20,7 +20,14 @@ def number_fee_note(sender, instance, **kwargs):
     fee_note = instance
     if not fee_note.pk:
         fee_notes = FeeNote.objects.filter(date_created__date__year=now().year).count()
-        fee_note.fee_note_number = fee_notes + 1
+        no = fee_notes + 1
+        while True:
+            try:
+                FeeNote.objects.get(fee_note_number=no)
+                no += 1
+            except FeeNote.DoesNotExist:
+                fee_note.fee_note_number = no
+                break
 
 
 @receiver(post_delete, sender=FeeNote)
