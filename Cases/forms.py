@@ -13,7 +13,7 @@ class CaseForm(ModelForm):
             'company_email': widgets.EmailInput(attrs={'class': 'form-control mb-3'}),
             'policy': widgets.Select(attrs={'class': 'form-control mb-3'}),
             'client': widgets.TextInput(attrs={'class': 'form-control mb-3'}),
-            'description': widgets.Textarea(attrs={'class': 'form-control  mb-3'}),
+            'description': widgets.Textarea(attrs={'class': 'form-control  mb-3', 'maxlength': 200}),
             'reference_number': widgets.TextInput(attrs={'class': 'form-control mb-3'}),
             'assessor': widgets.Select(attrs={'class': 'form-control mb-3'}),
             'customer_reference': widgets.TextInput(attrs={'class': 'form-control mb-3'}),
