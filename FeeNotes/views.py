@@ -148,7 +148,7 @@ def generate_fee_note_pdf(request, fee_note_id):
         case_ref_parts[2] = case_ref_parts[2].zfill(3)
     case_ref = '/'.join(case_ref_parts)
     draw.text((1700, 810), case_ref, font=font_medium, fill=color)
-    draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+    draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
     draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
@@ -158,8 +158,8 @@ def generate_fee_note_pdf(request, fee_note_id):
         words = words_list
         first_line = ' '.join(words[:8])
         second_line = ' '.join(words[8:])
-        draw.text((800, 2595), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
-        draw.text((800, 2630), second_line[0] + second_line[1:], font=font_medium, fill=color)
+        draw.text((800, 2630), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2725), second_line[0] + second_line[1:], font=font_medium, fill=color)
     else:
         draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_medium, fill=color)
 
@@ -219,7 +219,7 @@ def pdf_preview(request, fee_note_id):
         case_ref_parts[2] = case_ref_parts[2].zfill(3)
     case_ref = '/'.join(case_ref_parts)
     draw.text((1700, 810), case_ref, font=font_medium, fill=color)
-    draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+    draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
     draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
@@ -229,8 +229,8 @@ def pdf_preview(request, fee_note_id):
         words = words_list
         first_line = ' '.join(words[:8])
         second_line = ' '.join(words[8:])
-        draw.text((800, 2595), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
-        draw.text((800, 2630), second_line[0].upper() + second_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2630), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2725), second_line[0] + second_line[1:], font=font_medium, fill=color)
     else:
         draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_medium, fill=color)
 

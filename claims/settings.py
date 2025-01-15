@@ -112,13 +112,6 @@ WSGI_APPLICATION = 'claims.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-DATABASES = {
-    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME', 'claimsug_database'),
         'USER': os.getenv('DB_USER', 'claimsug_user'),
@@ -131,6 +124,13 @@ DATABASES = {
     }
 }
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 
