@@ -156,13 +156,13 @@ def generate_fee_note_pdf(request, fee_note_id):
 #     draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
 #     draw.text((560, 1245), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     desc = fee_note.case.description
-    if len(desc) > 100:
+    if len(desc) > 90:
         words = desc.split()
         desc = ''
         line_length = 0
         lines = []
         for word in words:
-            if line_length + len(word) <= 90:
+            if line_length + len(word) <= 70:
                 desc += word + ' '
                 line_length += len(word) + 1
             else:
@@ -251,13 +251,13 @@ def pdf_preview(request, fee_note_id):
 #     draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
 #     draw.text((560, 1245), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     desc = fee_note.case.description
-    if len(desc) > 100:
+    if len(desc) > 90:
         words = desc.split()
         desc = ''
         line_length = 0
         lines = []
         for word in words:
-            if line_length + len(word) <= 90:
+            if line_length + len(word) <= 70:
                 desc += word + ' '
                 line_length += len(word) + 1
             else:
