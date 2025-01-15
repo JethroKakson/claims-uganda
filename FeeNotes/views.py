@@ -159,7 +159,7 @@ def generate_fee_note_pdf(request, fee_note_id):
         first_line = ' '.join(words[:8])
         second_line = ' '.join(words[8:])
         draw.text((800, 2595), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
-        draw.text((800, 2630), second_line[0].upper() + second_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2630), second_line[0] + second_line[1:], font=font_medium, fill=color)
     else:
         draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_medium, fill=color)
 
