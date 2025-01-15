@@ -210,22 +210,27 @@ def pdf_preview(request, fee_note_id):
     draw.rectangle((1800, 700, 2200, 780), fill=(255, 255, 255))
     draw.rectangle((1700, 920, 2100, 980), fill=(255, 255, 255))
     draw.text((1700, 915), str(fee_note.case.customer_reference), font=font_medium, fill=(0, 0, 0))
-    draw.text((380, 1980), str(fee_note.travel_detail), font=font_small, fill=(0, 0, 0))
+    draw.text((380, 1975), str(fee_note.travel_detail), font=font_medium, fill=(0, 0, 0))
     draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
     draw.text((360, 910), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
-    draw.text((1700, 810), fee_note.case.reference_number, font=font_medium, fill=color)
-    draw.text((560, 1100), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+    case_ref = fee_note.case.reference_number
+    case_ref_parts = case_ref.split('/')
+    if len(case_ref_parts) > 2:
+        case_ref_parts[2] = case_ref_parts[2].zfill(3)
+    case_ref = '/'.join(case_ref_parts)
+    draw.text((1700, 810), case_ref, font=font_medium, fill=color)
+    draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
     draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
     words_list = words.strip(',').split()
-    if len(words_list) > 10:
+    if len(words_list) > 8:
         words = words_list
-        first_line = ' '.join(words[:10])
-        second_line = ' '.join(words[10:])
-        draw.text((800, 2605), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
-        draw.text((800, 2640), second_line[0].upper() + second_line[1:].lower(), font=font_medium, fill=color)
+        first_line = ' '.join(words[:8])
+        second_line = ' '.join(words[8:])
+        draw.text((800, 2595), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2630), second_line[0].upper() + second_line[1:].lower(), font=font_medium, fill=color)
     else:
         draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_medium, fill=color)
 
