@@ -135,7 +135,7 @@ def generate_fee_note_pdf(request, fee_note_id):
     color = (0, 0, 0)
 
     # Draw texts
-    fee_note_ref = f'Pro. Inv/{str(fee_note.date_created.date().year)[2:]}/{'0'*(3-len(str(fee_note.fee_note_number)))+str(fee_note.fee_note_number)}'
+    fee_note_ref = f"Pro. Inv/{str(fee_note.date_created.date().year)[2:]}/{'0'*(3-len(str(fee_note.fee_note_number)))+str(fee_note.fee_note_number)}"
     draw.rectangle((1800, 700, 2200, 780), fill=(255, 255, 255))
     draw.rectangle((1700, 920, 2100, 980), fill=(255, 255, 255))
     draw.text((1700, 915), str(fee_note.case.customer_reference), font=font_medium, fill=(0, 0, 0))
