@@ -148,7 +148,26 @@ def generate_fee_note_pdf(request, fee_note_id):
         case_ref_parts[2] = case_ref_parts[2].zfill(3)
     case_ref = '/'.join(case_ref_parts)
     draw.text((1700, 810), case_ref, font=font_medium, fill=color)
-    draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+    desc = fee_note.case.description
+    if len(desc) > 100:
+        words = desc.split()
+        desc = ''
+        line_length = 0
+        lines = []
+        for word in words:
+            if line_length + len(word) <= 90:
+                desc += word + ' '
+                line_length += len(word) + 1
+            else:
+                lines.append(desc.strip())
+                desc = word + ' '
+                line_length = len(word) + 1
+        lines.append(desc.strip())
+        if len(lines) > 2:
+            lines = lines[:2] + ['']
+        draw.multiline_text((560, 1130), '\n'.join(lines), font=font_medium, fill=color)
+    else:
+        draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n' + desc, font=font_medium, fill=color)
     draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
@@ -219,7 +238,26 @@ def pdf_preview(request, fee_note_id):
         case_ref_parts[2] = case_ref_parts[2].zfill(3)
     case_ref = '/'.join(case_ref_parts)
     draw.text((1700, 810), case_ref, font=font_medium, fill=color)
-    draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+    desc = fee_note.case.description
+    if len(desc) > 100:
+        words = desc.split()
+        desc = ''
+        line_length = 0
+        lines = []
+        for word in words:
+            if line_length + len(word) <= 90:
+                desc += word + ' '
+                line_length += len(word) + 1
+            else:
+                lines.append(desc.strip())
+                desc = word + ' '
+                line_length = len(word) + 1
+        lines.append(desc.strip())
+        if len(lines) > 2:
+            lines = lines[:2] + ['']
+        draw.multiline_text((560, 1130), '\n'.join(lines), font=font_medium, fill=color)
+    else:
+        draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n' + desc, font=font_medium, fill=color)
     draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
