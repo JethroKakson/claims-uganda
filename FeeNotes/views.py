@@ -130,7 +130,11 @@ def generate_fee_note_pdf(request, fee_note_id):
     font_medium = ImageFont.truetype(font_path, 40) if font_path else font_default
     font_amount = ImageFont.truetype(font_path, 40) if font_path else font_default
     font_large = ImageFont.truetype(font_path, 70) if font_path else font_default
-    font_ref = ImageFont.truetype(font_path, 50) if font_path else font_default
+    # font_ref = ImageFont.truetype(font_path, 50) if font_path else font_default
+
+    # font_path = ""  # Replace with the path to your downloaded font file
+    # font_size = 50
+    font_ref = ImageFont.truetype('italic.ttf', 60) if font_path else font_default
 
     color = (0, 0, 0)
 
@@ -140,7 +144,7 @@ def generate_fee_note_pdf(request, fee_note_id):
     draw.rectangle((1700, 920, 2100, 980), fill=(255, 255, 255))
     draw.text((1700, 915), str(fee_note.case.customer_reference), font=font_medium, fill=(0, 0, 0))
     draw.text((380, 1975), str(fee_note.travel_detail), font=font_medium, fill=(0, 0, 0))
-    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
+    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(240, 128, 128))
     draw.text((360, 910), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     case_ref = fee_note.case.reference_number
     case_ref_parts = case_ref.split('/')
@@ -148,6 +152,9 @@ def generate_fee_note_pdf(request, fee_note_id):
         case_ref_parts[2] = case_ref_parts[2].zfill(3)
     case_ref = '/'.join(case_ref_parts)
     draw.text((1700, 810), case_ref, font=font_medium, fill=color)
+
+#     draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+#     draw.text((560, 1245), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     desc = fee_note.case.description
     if len(desc) > 100:
         words = desc.split()
@@ -167,9 +174,9 @@ def generate_fee_note_pdf(request, fee_note_id):
             lines = lines[:2] + ['']
         draw.multiline_text((560, 1130), '\n'.join(lines), font=font_medium, fill=color)
     else:
-        draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n' + desc, font=font_medium, fill=color)
-    draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
-    draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
+        draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+        draw.text((560, 1245), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
+        draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
     words_list = words.strip(',').split()
@@ -177,8 +184,9 @@ def generate_fee_note_pdf(request, fee_note_id):
         words = words_list
         first_line = ' '.join(words[:8])
         second_line = ' '.join(words[8:])
-        draw.text((800, 2630), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
-        draw.text((800, 2725), second_line[0] + second_line[1:], font=font_medium, fill=color)
+        
+        draw.text((800, 2628), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2720), second_line[0] + second_line[1:], font=font_medium, fill=color)
     else:
         draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_medium, fill=color)
 
@@ -220,7 +228,8 @@ def pdf_preview(request, fee_note_id):
     font_medium = ImageFont.truetype(font_path, 40) if font_path else font_default
     font_amount = ImageFont.truetype(font_path, 40) if font_path else font_default
     font_large = ImageFont.truetype(font_path, 70) if font_path else font_default
-    font_ref = ImageFont.truetype(font_path, 50) if font_path else font_default
+    # font_ref = ImageFont.truetype(font_path, 50) if font_path else font_default
+    font_ref = ImageFont.truetype('italic.ttf', 60) if font_path else font_default
 
     color = (0, 0, 0)
 
@@ -230,7 +239,7 @@ def pdf_preview(request, fee_note_id):
     draw.rectangle((1700, 920, 2100, 980), fill=(255, 255, 255))
     draw.text((1700, 915), str(fee_note.case.customer_reference), font=font_medium, fill=(0, 0, 0))
     draw.text((380, 1975), str(fee_note.travel_detail), font=font_medium, fill=(0, 0, 0))
-    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
+    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(240, 128, 128))
     draw.text((360, 910), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     case_ref = fee_note.case.reference_number
     case_ref_parts = case_ref.split('/')
@@ -238,6 +247,9 @@ def pdf_preview(request, fee_note_id):
         case_ref_parts[2] = case_ref_parts[2].zfill(3)
     case_ref = '/'.join(case_ref_parts)
     draw.text((1700, 810), case_ref, font=font_medium, fill=color)
+
+#     draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+#     draw.text((560, 1245), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
     desc = fee_note.case.description
     if len(desc) > 100:
         words = desc.split()
@@ -257,9 +269,9 @@ def pdf_preview(request, fee_note_id):
             lines = lines[:2] + ['']
         draw.multiline_text((560, 1130), '\n'.join(lines), font=font_medium, fill=color)
     else:
-        draw.text((560, 1130), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF \n' + desc, font=font_medium, fill=color)
-    draw.text((560, 1250), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color)
-    draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
+        draw.text((560, 1125), 'BEING PROFFESSIONAL FEES FOR SERVICES RENDERED ON ACCOUNT OF: \n'+fee_note.case.description.upper(), font=font_medium, fill=color)
+        draw.text((560, 1245), 'M/S '+fee_note.case.client.upper(), font=font_medium, fill=color) 
+        draw.text((1275, 805), now().strftime("%d/%m/%Y"), font=font_medium, fill=color)
 
     words = num2words(fee_note.total, lang='en') + ' Ugandan Shillings'
     words_list = words.strip(',').split()
@@ -267,8 +279,8 @@ def pdf_preview(request, fee_note_id):
         words = words_list
         first_line = ' '.join(words[:8])
         second_line = ' '.join(words[8:])
-        draw.text((800, 2630), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
-        draw.text((800, 2725), second_line[0] + second_line[1:], font=font_medium, fill=color)
+        draw.text((800, 2628), first_line[0].upper() + first_line[1:].lower(), font=font_medium, fill=color)
+        draw.text((800, 2720), second_line[0].upper() + second_line[1:].lower(), font=font_medium, fill=color)
     else:
         draw.text((800, 2625), words[0].upper() + words[1:].lower(), font=font_medium, fill=color)
 
