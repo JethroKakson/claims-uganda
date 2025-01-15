@@ -144,7 +144,7 @@ def generate_fee_note_pdf(request, fee_note_id):
     draw.rectangle((1700, 920, 2100, 980), fill=(255, 255, 255))
     draw.text((1700, 915), str(fee_note.case.customer_reference), font=font_medium, fill=(0, 0, 0))
     draw.text((380, 1975), str(fee_note.travel_detail), font=font_medium, fill=(0, 0, 0))
-    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(240, 128, 128))
+    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
     draw.text((360, 910), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     case_ref = fee_note.case.reference_number
     case_ref_parts = case_ref.split('/')
@@ -239,7 +239,7 @@ def pdf_preview(request, fee_note_id):
     draw.rectangle((1700, 920, 2100, 980), fill=(255, 255, 255))
     draw.text((1700, 915), str(fee_note.case.customer_reference), font=font_medium, fill=(0, 0, 0))
     draw.text((380, 1975), str(fee_note.travel_detail), font=font_medium, fill=(0, 0, 0))
-    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(240, 128, 128))
+    draw.text((1800, 700), fee_note_ref, font=font_ref, fill=(255, 0, 0))
     draw.text((360, 910), 'M/S ' + fee_note.case.get_insurance_Company_display().upper(), font=font_medium, fill=color)
     case_ref = fee_note.case.reference_number
     case_ref_parts = case_ref.split('/')
