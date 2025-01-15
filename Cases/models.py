@@ -39,7 +39,7 @@ class Case(models.Model):
     date_reported = models.DateField(default=now)
     client = models.CharField(max_length=50)
     description = models.TextField()
-    comment = models.TextField(null=True)
+    comment = models.TextField(null=True, blank=True)
     pictures = models.ManyToManyField('Pictures.Picture', blank=True, related_name='case_pictures')
     reference_number = models.CharField(max_length=50)
     customer_reference = models.CharField(max_length=100, default='Not Advised')
@@ -48,7 +48,7 @@ class Case(models.Model):
     assessor = models.ForeignKey('Assessors.Assessor', on_delete=models.SET_NULL, null=True, related_name='_case_assessor')
     fee_note = models.OneToOneField('FeeNotes.FeeNote', on_delete=models.SET_NULL, null=True, related_name='case_feenote')
     support_documents = models.ManyToManyField('SupportDocuments.SupportDocument', blank=True, related_name='case_support_documents')
-    field_notes = models.FileField(upload_to='CaseFieldNotes/files', null=True)
+    field_notes = models.FileField(upload_to='CaseFieldNotes/files', null=True, blank=True)
     paid = models.BooleanField(default=False)
 
     def __str__(self):
